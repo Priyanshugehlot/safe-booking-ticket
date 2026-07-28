@@ -1,0 +1,363 @@
+/* ==========================================================================
+   RailPulse Custom Design System (CSS3 & Glassmorphism)
+   ========================================================================== */
+
+:root {
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Light Theme Colors */
+  --bg-primary: #f4f7fc;
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-glass: rgba(255, 255, 255, 0.75);
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: rgba(226, 232, 240, 0.8);
+
+  --primary-color: #0284c7;
+  --primary-hover: #0369a1;
+  --accent-color: #f59e0b;
+  --cyan-color: #06b6d4;
+
+  --shadow-sm: 0 2px 8px rgba(14, 165, 233, 0.08);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+  --shadow-2xl: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+}
+
+[data-theme="dark"] {
+  --bg-primary: #0f172a;
+  --bg-card: rgba(30, 41, 59, 0.85);
+  --bg-glass: rgba(30, 41, 59, 0.75);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: rgba(51, 65, 85, 0.8);
+
+  --primary-color: #38bdf8;
+  --primary-hover: #0284c7;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.navbar-brand {
+  font-family: var(--font-heading);
+}
+
+/* TOP ANNOUNCEMENT BAR */
+.top-bar {
+  background: linear-gradient(90deg, #0284c7, #0d9488, #2563eb);
+}
+
+/* NAVBAR */
+#mainNavbar {
+  background: var(--bg-glass);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+}
+
+.brand-logo {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #0284c7, #2563eb);
+  color: white;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #0284c7, #2563eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* APP VIEW ROUTER */
+.app-view {
+  display: none;
+  animation: fadeIn 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.app-view.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* HERO SECTION */
+.hero-section {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0369a1 100%);
+  position: relative;
+  min-height: 580px;
+}
+
+.hero-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 20% 30%, rgba(2, 132, 199, 0.3) 0%, transparent 60%);
+  z-index: 1;
+}
+
+/* GLASSMORPHISM CARDS */
+.glass-card {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-color) !important;
+  transition: transform 0.3s ease, shadow 0.3s ease;
+}
+
+.card-hover:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg) !important;
+}
+
+.hover-up {
+  transition: transform 0.2s ease;
+}
+
+.hover-up:hover {
+  transform: translateY(-3px);
+}
+
+.route-img {
+  height: 180px;
+  object-fit: cover;
+}
+
+/* SEAT SELECTION INTERACTIVE MAP */
+.coach-layout-container {
+  background: #0f172a;
+  color: white;
+}
+
+/* COACH BLUEPRINT STYLING FOR INDIAN RAILWAYS */
+.coach-blueprint {
+  background: #0f172a;
+  border: 2px solid #334155;
+  border-radius: 16px;
+  padding: 20px;
+  color: white;
+  position: relative;
+}
+
+.coach-gangway {
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03));
+  border-top: 1px dashed rgba(255, 255, 255, 0.2);
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 700;
+  text-uppercase: uppercase;
+  margin: 12px 0;
+}
+
+.train-bay-container {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.train-bay {
+  background: rgba(30, 41, 59, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 12px;
+  position: relative;
+}
+
+.bay-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--cyan-color);
+  margin-bottom: 8px;
+  text-uppercase: uppercase;
+  letter-spacing: 1px;
+}
+
+.bay-seats-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.main-bay-seats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.side-bay-seats {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  padding-left: 12px;
+  border-left: 1px dashed rgba(255, 255, 255, 0.2);
+}
+
+.chair-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 6px 0;
+}
+
+.chair-side-left,
+.chair-side-right {
+  display: flex;
+  gap: 8px;
+}
+
+.seat-item {
+  width: 46px;
+  height: 46px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s ease;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.seat-berth-badge {
+  font-size: 0.58rem;
+  opacity: 0.9;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.seat-available {
+  background-color: #10b981;
+  color: white;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
+}
+
+.seat-available:hover {
+  transform: scale(1.1);
+  background-color: #059669;
+}
+
+.seat-occupied {
+  background-color: #ef4444;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.seat-selected {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.8);
+  transform: scale(1.08);
+}
+
+.seat-disabled {
+  background-color: #64748b;
+  color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.seat-sample {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+}
+
+/* AIRPORT SPLIT FLAP BOARD */
+.table-monospace {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.letter-spacing {
+  letter-spacing: 2px;
+}
+
+.animate-pulse {
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+/* PRINT STYLES */
+@media print {
+  body * {
+    visibility: hidden;
+  }
+
+  #ticketPrintArea,
+  #ticketPrintArea * {
+    visibility: visible;
+  }
+
+  #ticketPrintArea {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+}
