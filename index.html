@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RailPulse | Production-Ready Smart Train & Reservation System</title>
+  <meta name="description"
+    content="Next-Generation Railway Reservation System, Real-Time Train Tracking, Telemetry Analytics, AI Delay Predictor, and Digital Ticketing Platform.">
+
+  <!-- Google Fonts: Outfit & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome 6 Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- Leaflet CSS for Maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <!-- AOS Animation CSS -->
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+  <!-- Custom CSS Design System -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- TOP ANNOUNCEMENT BAR -->
+  <div class="top-bar py-1 text-white text-center small fw-medium">
+    <span><i class="fa-solid fa-bullhorn text-warning me-1"></i> Special Summer Rail Offer: Get 15% Cashback on Vande
+      Bharat & Rajdhani Tickets via RailPulse Wallet!</span>
+  </div>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="navbar navbar-expand-lg sticky-top shadow-sm" id="mainNavbar">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="#" onclick="navigateTo('homeView')">
+        <div class="brand-logo shadow">
+          <i class="fa-solid fa-train-subway"></i>
+        </div>
+        <div>
+          <span class="brand-name fw-extrabold fs-4 text-gradient">RailPulse</span>
+          <span class="badge bg-primary-subtle text-primary border border-primary-subtle ms-1 text-uppercase small"
+            style="font-size: 0.65rem;">PRO v2.4</span>
+        </div>
+      </a>
+
+      <!-- Mobile Quick Actions & Toggler -->
+      <div class="d-flex align-items-center gap-2 d-lg-none">
+        <button class="btn btn-icon btn-outline-secondary rounded-circle" id="darkModeToggleMobile"
+          title="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse"
+          data-bs-target="#navContent">
+          <i class="fa-solid fa-bars-staggered fs-4"></i>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse" id="navContent">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-medium">
+          <li class="nav-item"><a class="nav-link active" href="#" id="nav-homeView" onclick="navigateTo('homeView')"><i
+                class="fa-solid fa-house me-1"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" id="nav-searchView" onclick="navigateTo('searchView')"><i
+                class="fa-solid fa-magnifying-glass me-1"></i> Book Ticket</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" id="nav-liveStatusView"
+              onclick="navigateTo('liveStatusView')"><i class="fa-solid fa-route me-1"></i> Live Tracking</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" id="nav-telemetryView"
+              onclick="navigateTo('telemetryView')"><i class="fa-solid fa-gauge-high me-1"></i> Telemetry</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" id="nav-stationBoardView"
+              onclick="navigateTo('stationBoardView')"><i class="fa-solid fa-clock-rotate-left me-1"></i> Station
+              Board</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" id="nav-pnrView" onclick="navigateTo('pnrView')"><i
+                class="fa-solid fa-ticket me-1"></i> PNR Status</a></li>
+          <li class="nav-item"><a class="nav-link" href="#" id="nav-tripPlannerView"
+              onclick="navigateTo('tripPlannerView')"><i class="fa-solid fa-compass me-1"></i> AI Planner</a></li>
+        </ul>
+
+        <!-- Right User Actions -->
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-icon btn-outline-secondary rounded-circle d-none d-lg-flex" id="darkModeToggle"
+            title="Toggle Theme">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+
+          <!-- Guest State -->
+          <div id="authGuestButtons" class="d-flex align-items-center gap-2">
+            <button class="btn btn-outline-primary btn-sm rounded-pill px-3" onclick="openLoginModal()">Login</button>
+            <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm"
+              onclick="openSignupModal()">Register</button>
+          </div>
+
+          <!-- Logged In User State -->
+          <div id="authUserDropdown" class="dropdown d-none">
+            <a class="btn btn-outline-light text-body border-0 shadow-sm dropdown-toggle d-flex align-items-center gap-2 rounded-pill px-3 bg-card"
+              href="#" role="button" data-bs-toggle="dropdown">
+              <div
+                class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                id="userAvatarChar">U</div>
+              <span class="fw-semibold small d-none d-sm-inline" id="navUserName">User</span>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 mt-2">
+              <li class="px-3 py-2 border-bottom">
+                <div class="fw-bold" id="dropdownUserFullName">Passenger</div>
+                <div class="small text-muted" id="dropdownUserEmail">user@example.com</div>
+                <div class="badge bg-success-subtle text-success border border-success-subtle mt-1" id="navWalletBadge">
+                  <i class="fa-solid fa-wallet me-1"></i> Wallet: ₹0
+                </div>
+              </li>
+              <li><a class="dropdown-item py-2" href="#" onclick="navigateTo('dashboardView')"><i
+                    class="fa-solid fa-gauge me-2 text-primary"></i> Passenger Dashboard</a></li>
+              <li><a class="dropdown-item py-2" href="#" onclick="navigateTo('dashboardView', 'trips')"><i
+                    class="fa-solid fa-clock-history me-2 text-info"></i> My Bookings & PNR</a></li>
+              <li id="adminNavMenuItem" class="d-none"><a class="dropdown-item py-2 text-warning fw-bold" href="#"
+                  onclick="navigateTo('adminView')"><i class="fa-solid fa-user-shield me-2"></i> Admin Control Panel</a>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item py-2 text-danger" href="#" onclick="logoutUser()"><i
+                    class="fa-solid fa-right-from-bracket me-2"></i> Logout</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- APP VIEW CONTAINER -->
+  <main id="appContainer">
+
+    <!-- ==================== 1. HOME VIEW ==================== -->
+    <section id="homeView" class="app-view active">
+      <!-- HERO BANNER -->
+      <div class="hero-section text-white relative overflow-hidden">
+        <div class="hero-bg-overlay"></div>
+
+        <!-- Canvas Train Animation Background -->
+        <canvas id="trainCanvas" class="hero-canvas"></canvas>
+
+        <div class="container relative z-2 py-5">
+          <div class="row align-items-center gy-4">
+            <div class="col-lg-7" data-aos="fade-right">
+              <div
+                class="badge bg-white-10 text-white border border-white-20 rounded-pill px-3 py-2 mb-3 backdrop-blur">
+                <i class="fa-solid fa-bolt text-warning me-2"></i> Real-Time Telemetry & AI Delay Prediction Active
+              </div>
+              <h1 class="display-4 fw-extrabold mb-3 lh-sm">Experience Smart Rail Travel with <span
+                  class="text-warning">Precision & Luxury</span></h1>
+              <p class="lead text-white-80 mb-4 fw-normal">Book instant train tickets, track live GPS location on
+                interactive maps, view coach occupancy gauges, and predict delay probabilities powered by AI.</p>
+
+              <div class="d-flex flex-wrap align-items-center gap-3">
+                <a href="#quickBook"
+                  class="btn btn-warning btn-lg rounded-pill fw-bold text-dark px-4 shadow-lg hover-up">
+                  <i class="fa-solid fa-ticket me-2"></i> Quick Book Ticket
+                </a>
+                <button class="btn btn-outline-light btn-lg rounded-pill px-4 backdrop-blur hover-up"
+                  onclick="navigateTo('liveStatusView')">
+                  <i class="fa-solid fa-location-crosshairs me-2 text-cyan"></i> Live Train Tracker
+                </button>
+              </div>
+
+              <!-- Quick Metrics Row -->
+              <div class="row g-3 mt-4 pt-2 border-top border-white-20">
+                <div class="col-4">
+                  <h3 class="fw-bold mb-0 text-warning">99.4%</h3>
+                  <span class="small text-white-70">On-Time Accuracy</span>
+                </div>
+                <div class="col-4">
+                  <h3 class="fw-bold mb-0 text-cyan">150+</h3>
+                  <span class="small text-white-70">Express & Vande Bharat</span>
+                </div>
+                <div class="col-4">
+                  <h3 class="fw-bold mb-0 text-white">4.9/5</h3>
+                  <span class="small text-white-70">Passenger Rating</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- QUICK BOOKING SEARCH CARD -->
+            <div class="col-lg-5" data-aos="fade-left">
+              <div class="card glass-card border-0 rounded-4 shadow-2xl p-4 text-body" id="quickBook">
+                <h4 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                  <i class="fa-solid fa-train text-primary"></i> Search & Book Trains
+                </h4>
+
+                <form id="heroSearchForm">
+                  <div class="row g-3">
+                    <div class="col-12 col-sm-6">
+                      <label class="form-label small fw-bold text-muted"><i
+                          class="fa-solid fa-location-dot text-danger me-1"></i> From Station</label>
+                      <select class="form-select form-select-lg rounded-3 fs-6" id="searchFromStation" required>
+                        <option value="NDLS">New Delhi (NDLS)</option>
+                        <option value="MMCT">Mumbai Central (MMCT)</option>
+                        <option value="HWH">Howrah Junction (HWH)</option>
+                        <option value="MAS">Chennai Central (MAS)</option>
+                        <option value="SBC">Bengaluru City (SBC)</option>
+                        <option value="ADI">Ahmedabad (ADI)</option>
+                      </select>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                      <label class="form-label small fw-bold text-muted"><i
+                          class="fa-solid fa-location-arrow text-success me-1"></i> To Station</label>
+                      <select class="form-select form-select-lg rounded-3 fs-6" id="searchToStation" required>
+                        <option value="MMCT">Mumbai Central (MMCT)</option>
+                        <option value="NDLS">New Delhi (NDLS)</option>
+                        <option value="ADI">Ahmedabad (ADI)</option>
+                        <option value="HWH">Howrah Junction (HWH)</option>
+                        <option value="MAS">Chennai Central (MAS)</option>
+                        <option value="SBC">Bengaluru City (SBC)</option>
+                      </select>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                      <label class="form-label small fw-bold text-muted"><i class="fa-regular fa-calendar me-1"></i>
+                        Departure Date</label>
+                      <input type="date" class="form-control form-control-lg rounded-3 fs-6" id="searchTravelDate"
+                        required>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                      <label class="form-label small fw-bold text-muted"><i class="fa-solid fa-users me-1"></i>
+                        Passengers</label>
+                      <select class="form-select form-select-lg rounded-3 fs-6" id="searchPassengerCount">
+                        <option value="1">1 Passenger</option>
+                        <option value="2" selected>2 Passengers</option>
+                        <option value="3">3 Passengers</option>
+                        <option value="4">4 Passengers</option>
+                        <option value="6">6 Passengers (Max Tatkal)</option>
+                      </select>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                      <label class="form-label small fw-bold text-muted"><i class="fa-solid fa-couch me-1"></i> Travel
+                        Class</label>
+                      <select class="form-select form-select-lg rounded-3 fs-6" id="searchClass">
+                        <option value="ALL">All Classes</option>
+                        <option value="1A">AC First Class (1A)</option>
+                        <option value="2A">AC 2 Tier (2A)</option>
+                        <option value="3A" selected>AC 3 Tier (3A)</option>
+                        <option value="EC">Executive Chair (EC)</option>
+                        <option value="CC">AC Chair Car (CC)</option>
+                        <option value="SL">Sleeper (SL)</option>
+                      </select>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                      <label class="form-label small fw-bold text-muted"><i class="fa-solid fa-layer-group me-1"></i>
+                        Booking Quota</label>
+                      <select class="form-select form-select-lg rounded-3 fs-6" id="searchQuota">
+                        <option value="General">General Quota</option>
+                        <option value="Tatkal">Tatkal Quota</option>
+                        <option value="Ladies">Ladies Quota</option>
+                        <option value="Senior">Senior Citizen</option>
+                      </select>
+                    </div>
+
+                    <div class="col-12 pt-2">
+                      <button type="submit" class="btn btn-primary btn-lg w-100 rounded-3 fw-bold shadow-primary">
+                        <i class="fa-solid fa-magnifying-glass me-2"></i> Find Available Trains
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- POPULAR DESTINATIONS -->
+      <div class="container py-5">
+        <div class="text-center mb-5" data-aos="fade-up">
+          <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-bold text-uppercase">Top Railway
+            Routes</span>
+          <h2 class="display-6 fw-bold mt-2">Popular High-Speed Routes</h2>
+          <p class="text-muted">Travel comfortably across India's premier express corridors.</p>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="card card-hover border-0 shadow-sm rounded-4 overflow-hidden h-100">
+              <div class="position-relative">
+                <img src="https://images.unsplash.com/photo-1570168007204-dfb528c6958f?auto=format&fit=crop&w=600&q=80"
+                  class="card-img-top route-img" alt="Mumbai">
+                <span class="badge bg-gradient-primary position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill">From
+                  ₹2,040</span>
+              </div>
+              <div class="card-body p-4">
+                <h5 class="fw-bold card-title">New Delhi <i class="fa-solid fa-arrow-right-long text-primary mx-2"></i>
+                  Mumbai Central</h5>
+                <p class="text-muted small mb-3"><i class="fa-solid fa-train me-1"></i> Mumbai Rajdhani (12952) • 15h
+                  40m</p>
+                <button class="btn btn-outline-primary btn-sm w-100 rounded-pill fw-semibold"
+                  onclick="quickSearchRoute('NDLS', 'MMCT')">Book This Route</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="card card-hover border-0 shadow-sm rounded-4 overflow-hidden h-100">
+              <div class="position-relative">
+                <img src="https://images.unsplash.com/photo-1596176530529-78163a4f7af2?auto=format&fit=crop&w=600&q=80"
+                  class="card-img-top route-img" alt="Ahmedabad">
+                <span class="badge bg-gradient-primary position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill">From
+                  ₹1,780</span>
+              </div>
+              <div class="card-body p-4">
+                <h5 class="fw-bold card-title">New Delhi <i class="fa-solid fa-arrow-right-long text-primary mx-2"></i>
+                  Ahmedabad</h5>
+                <p class="text-muted small mb-3"><i class="fa-solid fa-bolt text-warning me-1"></i> Vande Bharat (20901)
+                  • 6h 20m</p>
+                <button class="btn btn-outline-primary btn-sm w-100 rounded-pill fw-semibold"
+                  onclick="quickSearchRoute('NDLS', 'ADI')">Book This Route</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="card card-hover border-0 shadow-sm rounded-4 overflow-hidden h-100">
+              <div class="position-relative">
+                <img src="https://images.unsplash.com/photo-1558431382-27e303142255?auto=format&fit=crop&w=600&q=80"
+                  class="card-img-top route-img" alt="Kolkata">
+                <span class="badge bg-gradient-primary position-absolute top-0 end-0 m-3 px-3 py-2 rounded-pill">From
+                  ₹2,150</span>
+              </div>
+              <div class="card-body p-4">
+                <h5 class="fw-bold card-title">New Delhi <i class="fa-solid fa-arrow-right-long text-primary mx-2"></i>
+                  Howrah (Kolkata)</h5>
+                <p class="text-muted small mb-3"><i class="fa-solid fa-train me-1"></i> Howrah Rajdhani (12302) • 17h
+                  05m</p>
+                <button class="btn btn-outline-primary btn-sm w-100 rounded-pill fw-semibold"
+                  onclick="quickSearchRoute('NDLS', 'HWH')">Book This Route</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURED SERVICES & TELEMETRY HIGHLIGHTS -->
+      <div class="bg-card py-5 border-top border-bottom">
+        <div class="container py-3">
+          <div class="text-center mb-5">
+            <h2 class="display-6 fw-bold">Smart Railway Innovation Hub</h2>
+            <p class="text-muted">Explore real-time telemetry, AI delay risk models, and airport-style passenger boards.
+            </p>
+          </div>
+
+          <div class="row g-4">
+            <div class="col-md-3 col-sm-6 text-center">
+              <div class="p-4 rounded-4 bg-body border shadow-sm hover-up h-100">
+                <div class="feature-icon bg-primary-subtle text-primary rounded-circle mx-auto mb-3">
+                  <i class="fa-solid fa-map-location-dot fs-3"></i>
+                </div>
+                <h5 class="fw-bold">Live GPS Tracking</h5>
+                <p class="small text-muted">Track precise train movement with Leaflet interactive maps and station ETAs.
+                </p>
+                <button class="btn btn-link btn-sm text-primary p-0 fw-bold"
+                  onclick="navigateTo('liveStatusView')">Explore Map <i
+                    class="fa-solid fa-chevron-right ms-1"></i></button>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 text-center">
+              <div class="p-4 rounded-4 bg-body border shadow-sm hover-up h-100">
+                <div class="feature-icon bg-success-subtle text-success rounded-circle mx-auto mb-3">
+                  <i class="fa-solid fa-gauge-high fs-3"></i>
+                </div>
+                <h5 class="fw-bold">Loco Telemetry</h5>
+                <p class="small text-muted">Monitor engine speed, power consumption, temperature & coach occupancy live.
+                </p>
+                <button class="btn btn-link btn-sm text-success p-0 fw-bold" onclick="navigateTo('telemetryView')">View
+                  Metrics <i class="fa-solid fa-chevron-right ms-1"></i></button>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 text-center">
+              <div class="p-4 rounded-4 bg-body border shadow-sm hover-up h-100">
+                <div class="feature-icon bg-warning-subtle text-warning rounded-circle mx-auto mb-3">
+                  <i class="fa-solid fa-brain fs-3"></i>
+                </div>
+                <h5 class="fw-bold">AI Delay Predictor</h5>
+                <p class="small text-muted">Machine learning forecasts arrival delays using weather and track density.
+                </p>
+                <button class="btn btn-link btn-sm text-warning p-0 fw-bold"
+                  onclick="navigateTo('tripPlannerView')">Test Predictor <i
+                    class="fa-solid fa-chevron-right ms-1"></i></button>
+              </div>
+            </div>
+
+            <div class="col-md-3 col-sm-6 text-center">
+              <div class="p-4 rounded-4 bg-body border shadow-sm hover-up h-100">
+                <div class="feature-icon bg-info-subtle text-info rounded-circle mx-auto mb-3">
+                  <i class="fa-solid fa-table-list fs-3"></i>
+                </div>
+                <h5 class="fw-bold">Airport Station Board</h5>
+                <p class="small text-muted">Airport-style split-flap departure and arrival boards for station master
+                  displays.</p>
+                <button class="btn btn-link btn-sm text-info p-0 fw-bold" onclick="navigateTo('stationBoardView')">Open
+                  Board <i class="fa-solid fa-chevron-right ms-1"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ SECTION -->
+      <div class="container py-5">
+        <div class="row align-items-center gy-4">
+          <div class="col-lg-5">
+            <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-bold text-uppercase">Help &
+              Support</span>
+            <h2 class="display-6 fw-bold mt-2">Frequently Asked Questions</h2>
+            <p class="text-muted">Everything you need to know about RailPulse tickets, refunds, and live tracking.</p>
+          </div>
+          <div class="col-lg-7">
+            <div class="accordion accordion-flush shadow-sm border rounded-4 p-2 bg-card" id="faqAccordion">
+              <div class="accordion-item bg-transparent">
+                <h2 class="accordion-header">
+                  <button class="accordion-button fw-bold fs-6" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#faq1">
+                    How does instant refund work on ticket cancellation?
+                  </button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body text-muted small">
+                    When you cancel a ticket in your RailPulse dashboard, refund calculation is processed instantly
+                    based on time left before train departure. Refunds are directly credited to your RailPulse Wallet
+                    within 2 seconds.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item bg-transparent">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed fw-bold fs-6" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#faq2">
+                    How accurate is the Live GPS map tracking?
+                  </button>
+                </h2>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body text-muted small">
+                    RailPulse connects directly to loco telemetry receivers. Data streams via WebSockets/SSE every 2
+                    seconds, delivering precise GPS lat/lng coordinates and live speed metrics.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-item bg-transparent">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed fw-bold fs-6" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#faq3">
+                    Can I download official PDF tickets with QR codes?
+                  </button>
+                </h2>
+                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body text-muted small">
+                    Yes! Every confirmed booking generates a unique PNR and high-resolution QR code. Click "Download PDF
+                    Ticket" in your booking confirmation page to save a print-ready PDF ticket.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 2. TRAIN SEARCH & RESULTS VIEW ==================== -->
+    <section id="searchView" class="app-view">
+      <div class="container py-4">
+        <!-- SEARCH FILTER BAR -->
+        <div class="card glass-card border-0 rounded-4 shadow-sm p-4 mb-4">
+          <h4 class="fw-bold mb-3"><i class="fa-solid fa-filter text-primary me-2"></i> Modify Search Criteria</h4>
+          <form id="resultsFilterForm">
+            <div class="row g-3 align-items-end">
+              <div class="col-md-3">
+                <label class="form-label small fw-bold">From Station</label>
+                <select class="form-select" id="filterFrom">
+                  <option value="NDLS" selected>New Delhi (NDLS)</option>
+                  <option value="MMCT">Mumbai Central (MMCT)</option>
+                  <option value="HWH">Howrah Junction (HWH)</option>
+                  <option value="MAS">Chennai Central (MAS)</option>
+                  <option value="SBC">Bengaluru City (SBC)</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label small fw-bold">To Station</label>
+                <select class="form-select" id="filterTo">
+                  <option value="MMCT" selected>Mumbai Central (MMCT)</option>
+                  <option value="NDLS">New Delhi (NDLS)</option>
+                  <option value="ADI">Ahmedabad (ADI)</option>
+                  <option value="HWH">Howrah Junction (HWH)</option>
+                  <option value="MAS">Chennai Central (MAS)</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label small fw-bold">Travel Class</label>
+                <select class="form-select" id="filterClass">
+                  <option value="ALL" selected>All Classes (1A, 2A, 3A, SL, EC)</option>
+                  <option value="1A">AC 1st Class (1A)</option>
+                  <option value="2A">AC 2 Tier (2A)</option>
+                  <option value="3A">AC 3 Tier (3A)</option>
+                  <option value="EC">Executive Class (EC)</option>
+                  <option value="CC">Chair Car (CC)</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <button type="submit" class="btn btn-primary w-100 rounded-3 fw-bold">
+                  <i class="fa-solid fa-arrows-rotate me-1"></i> Update Results
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <!-- SEARCH RESULTS LIST -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h4 class="fw-bold mb-0" id="resultsCountHeader">Available Trains</h4>
+          <div class="small text-muted">Showing live seat availability & real-time fares</div>
+        </div>
+
+        <div id="trainResultsContainer" class="d-flex flex-column gap-3">
+          <!-- Dynamically populated via JS -->
+          <div class="text-center py-5" id="trainsLoadingSkeleton">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted">Fetching live train schedules...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 3. INTERACTIVE SEAT SELECTION VIEW ==================== -->
+    <section id="seatView" class="app-view">
+      <div class="container py-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <button class="btn btn-outline-secondary rounded-pill btn-sm" onclick="navigateTo('searchView')">
+            <i class="fa-solid fa-arrow-left me-1"></i> Back to Train Results
+          </button>
+          <div class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-bold" id="seatTrainTitle">
+            Train #12952 - Mumbai Rajdhani Express
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <!-- COACH SELECTION & LEGEND -->
+          <div class="col-lg-8">
+            <div class="card glass-card border-0 rounded-4 shadow-sm p-4 mb-4">
+              <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 border-bottom pb-3 mb-3">
+                <h5 class="fw-bold mb-0"><i class="fa-solid fa-couch text-primary me-2"></i> Select Coach & Seat</h5>
+                <!-- Class Pills -->
+                <div class="btn-group" role="group" id="coachClassPills">
+                  <button type="button" class="btn btn-outline-primary active" onclick="switchCoachClass('3A')">AC 3
+                    Tier (3A)</button>
+                  <button type="button" class="btn btn-outline-primary" onclick="switchCoachClass('2A')">AC 2 Tier
+                    (2A)</button>
+                  <button type="button" class="btn btn-outline-primary" onclick="switchCoachClass('1A')">AC 1st Class
+                    (1A)</button>
+                </div>
+              </div>
+
+              <!-- Seat Color Legend -->
+              <div class="d-flex flex-wrap gap-4 align-items-center mb-4 p-3 bg-body rounded-3 border">
+                <div class="d-flex align-items-center gap-2">
+                  <div class="seat-sample seat-available"></div> <span class="small fw-semibold">Available</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="seat-sample seat-occupied"></div> <span class="small fw-semibold">Occupied</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="seat-sample seat-selected"></div> <span class="small fw-semibold">Selected</span>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="seat-sample seat-disabled"></div> <span class="small fw-semibold">Disabled</span>
+                </div>
+              </div>
+
+              <!-- COACH VISUAL MAP -->
+              <div class="coach-layout-container p-4 rounded-4 border bg-card relative overflow-auto">
+                <div class="coach-header d-flex justify-content-between align-items-center mb-3">
+                  <span class="badge bg-dark text-white fw-bold"><i class="fa-solid fa-gears me-1"></i> LOCOMOTIVE
+                    ENGINE</span>
+                  <span class="fw-bold text-muted" id="activeCoachName">Coach: B2 (AC 3-Tier)</span>
+                  <span class="badge bg-dark text-white fw-bold">GUARD CAB <i class="fa-solid fa-flag me-1"></i></span>
+                </div>
+
+                <!-- Seat Map Grid -->
+                <div id="seatGridMap" class="seat-grid-map">
+                  <!-- Populated dynamically via seat-picker.js -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SELECTION SUMMARY & PROCEED PANEL -->
+          <div class="col-lg-4">
+            <div class="card glass-card border-0 rounded-4 shadow-sm p-4 sticky-top" style="top: 90px;">
+              <h5 class="fw-bold border-bottom pb-3 mb-3"><i class="fa-solid fa-receipt text-success me-2"></i>
+                Selection Summary</h5>
+
+              <div class="mb-3">
+                <span class="text-muted small">Selected Seats:</span>
+                <div id="selectedSeatsBadgeList" class="d-flex flex-wrap gap-2 mt-1">
+                  <span class="badge bg-secondary">No seats selected yet</span>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label small fw-bold text-muted">Berth Preference</label>
+                <select class="form-select form-select-sm" id="berthPreferenceSelect">
+                  <option value="No Preference">No Preference</option>
+                  <option value="Lower Berth">Lower Berth (Senior Friendly)</option>
+                  <option value="Middle Berth">Middle Berth</option>
+                  <option value="Upper Berth">Upper Berth</option>
+                  <option value="Side Lower">Side Lower</option>
+                </select>
+              </div>
+
+              <div class="border-top pt-3">
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="text-muted small">Base Fare (<span id="seatCountText">0</span> Passengers)</span>
+                  <span class="fw-semibold" id="seatBaseFareText">₹0</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                  <span class="text-muted small">GST (5%)</span>
+                  <span class="fw-semibold" id="seatGstText">₹0</span>
+                </div>
+                <div class="d-flex justify-content-between border-top pt-2 mt-2 fs-5 fw-bold">
+                  <span>Total Amount:</span>
+                  <span class="text-primary" id="seatTotalAmountText">₹0</span>
+                </div>
+              </div>
+
+              <button class="btn btn-primary btn-lg w-100 rounded-3 fw-bold mt-4 shadow-primary"
+                id="btnProceedPassengers" onclick="proceedToPassengers()" disabled>
+                Continue Passenger Info <i class="fa-solid fa-arrow-right ms-1"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 4. PASSENGER DETAILS & PAYMENT VIEW ==================== -->
+    <section id="passengerView" class="app-view">
+      <div class="container py-4">
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <!-- PASSENGER FORM -->
+            <div class="card glass-card border-0 rounded-4 shadow-sm p-4 mb-4">
+              <h4 class="fw-bold mb-3 border-bottom pb-3"><i class="fa-solid fa-user-pen text-primary me-2"></i>
+                Passenger Information</h4>
+              <form id="passengerDetailsForm">
+                <div id="passengerInputContainer">
+                  <!-- Generated dynamically for selected seat count -->
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- PAYMENT SUMMARY CARD -->
+          <div class="col-lg-4">
+            <div class="card glass-card border-0 rounded-4 shadow-sm p-4 sticky-top" style="top: 90px;">
+              <h5 class="fw-bold border-bottom pb-3 mb-3"><i class="fa-solid fa-shield-halved text-primary me-2"></i>
+                Payment Summary</h5>
+
+              <div class="d-flex flex-column gap-2 border-bottom pb-3 mb-3 small">
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">Base Ticket Fare</span>
+                  <span class="fw-bold" id="payBaseFare">₹0</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">GST (5%)</span>
+                  <span class="fw-bold" id="payGst">₹0</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">IRCTC Convenience Fee</span>
+                  <span class="fw-bold">₹35</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <span class="text-muted">Optional Travel Insurance</span>
+                  <span class="fw-bold">₹35</span>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between fs-4 fw-bold mb-4">
+                <span>Grand Total:</span>
+                <span class="text-success" id="payGrandTotal">₹0</span>
+              </div>
+
+              <button class="btn btn-success btn-lg w-100 rounded-3 fw-bold shadow-sm" onclick="openPaymentModal()">
+                <i class="fa-solid fa-lock me-2"></i> Proceed to Secure Payment
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 5. BOOKING CONFIRMATION VIEW ==================== -->
+    <section id="confirmationView" class="app-view">
+      <div class="container py-4">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <!-- SUCCESS TICKET CARD -->
+            <div class="card glass-card border-0 rounded-4 shadow-lg overflow-hidden p-4 p-md-5" id="ticketPrintArea">
+              <div class="text-center mb-4">
+                <div class="badge bg-success-subtle text-success fs-6 px-4 py-2 rounded-pill fw-bold mb-2">
+                  <i class="fa-solid fa-circle-check me-1"></i> BOOKING CONFIRMED (CNF)
+                </div>
+                <h2 class="fw-extrabold mb-1 text-gradient">RailPulse E-Ticket</h2>
+                <p class="text-muted small mb-0">PNR Number: <strong class="text-dark fs-5"
+                    id="ticketPnr">8429104721</strong></p>
+              </div>
+
+              <!-- Journey Details Grid -->
+              <div class="p-4 bg-body rounded-4 border mb-4">
+                <div class="row text-center text-md-start gy-3 align-items-center">
+                  <div class="col-md-5">
+                    <div class="text-muted small text-uppercase fw-bold">From Station</div>
+                    <div class="fs-4 fw-bold" id="tFromCity">New Delhi (NDLS)</div>
+                    <div class="small text-muted" id="tDepTime">Departure: 16:55</div>
+                  </div>
+                  <div class="col-md-2 text-center">
+                    <i class="fa-solid fa-train fs-2 text-primary"></i>
+                    <div class="small fw-bold text-muted mt-1" id="tTrainNum">12952</div>
+                  </div>
+                  <div class="col-md-5 text-md-end">
+                    <div class="text-muted small text-uppercase fw-bold">To Station</div>
+                    <div class="fs-4 fw-bold" id="tToCity">Mumbai Central (MMCT)</div>
+                    <div class="small text-muted" id="tArrTime">Arrival: 08:35</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Passenger Table -->
+              <h5 class="fw-bold mb-3"><i class="fa-solid fa-users text-primary me-2"></i> Passengers Manifest</h5>
+              <div class="table-responsive mb-4">
+                <table class="table table-bordered align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Age / Gender</th>
+                      <th>Coach</th>
+                      <th>Seat #</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ticketPassengerList">
+                    <!-- Populated via JS -->
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- QR Code & Barcode Row -->
+              <div class="row align-items-center p-3 bg-light rounded-4 border mb-4">
+                <div class="col-md-4 text-center mb-3 mb-md-0">
+                  <div id="ticketQrCode" class="d-flex justify-content-center"></div>
+                  <span class="small text-muted mt-1 d-block">Scan to Verify Ticket</span>
+                </div>
+                <div class="col-md-8">
+                  <div class="small text-muted fw-bold">Transaction Details:</div>
+                  <div class="small">Booking ID: <strong id="tBookingId">BK-90218</strong></div>
+                  <div class="small">Quota: <span id="tQuota">General</span> • Class: <span id="tClass">3A</span></div>
+                  <div class="small">Total Paid: <strong class="text-success" id="tTotalPaid">₹4,389</strong></div>
+                  <div class="small text-muted mt-2">Charting Status: <span class="badge bg-primary">CHART
+                      PREPARED</span></div>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="d-flex flex-wrap gap-3 justify-content-center no-print">
+                <button class="btn btn-primary btn-lg rounded-pill px-4 shadow-sm" onclick="downloadPdfTicket()">
+                  <i class="fa-solid fa-file-pdf me-2"></i> Download PDF Ticket
+                </button>
+                <button class="btn btn-outline-secondary btn-lg rounded-pill px-4" onclick="window.print()">
+                  <i class="fa-solid fa-print me-2"></i> Print Ticket
+                </button>
+                <button class="btn btn-outline-primary btn-lg rounded-pill px-4" onclick="navigateTo('dashboardView')">
+                  <i class="fa-solid fa-gauge me-2"></i> Go to Dashboard
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 6. PASSENGER DASHBOARD VIEW ==================== -->
+    <section id="dashboardView" class="app-view">
+      <div class="container py-4">
+        <div class="row g-4">
+          <!-- Sidebar Nav -->
+          <div class="col-lg-3">
+            <div class="card glass-card border-0 rounded-4 p-3 shadow-sm">
+              <div class="text-center p-3 border-bottom mb-3">
+                <div
+                  class="avatar-lg bg-primary text-white rounded-circle mx-auto d-flex align-items-center justify-content-center fs-2 fw-bold mb-2"
+                  id="dashAvatar">U</div>
+                <h5 class="fw-bold mb-0" id="dashName">Rahul Sharma</h5>
+                <span class="small text-muted" id="dashEmail">rahul.sharma@example.com</span>
+              </div>
+
+              <div class="nav flex-column nav-pills gap-2">
+                <button class="nav-link text-start active rounded-3" onclick="switchDashTab('trips')">
+                  <i class="fa-solid fa-ticket me-2"></i> My Bookings & PNR
+                </button>
+                <button class="nav-link text-start rounded-3" onclick="switchDashTab('wallet')">
+                  <i class="fa-solid fa-wallet me-2"></i> Rail Wallet & Refunds
+                </button>
+                <button class="nav-link text-start rounded-3" onclick="switchDashTab('saved')">
+                  <i class="fa-solid fa-users me-2"></i> Saved Passengers
+                </button>
+                <button class="nav-link text-start rounded-3" onclick="switchDashTab('profile')">
+                  <i class="fa-solid fa-user-gear me-2"></i> Profile & Security
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Main Dashboard Content -->
+          <div class="col-lg-9">
+            <div class="card glass-card border-0 rounded-4 p-4 shadow-sm" id="dashTabContent">
+              <!-- Rendered dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 7. LIVE GPS MAP TRACKER VIEW ==================== -->
+    <section id="liveStatusView" class="app-view">
+      <div class="container-fluid p-0 relative">
+        <div id="leafletMap" style="height: calc(100vh - 120px); min-height: 500px;" class="w-100"></div>
+
+        <!-- Floating Map Overlay Controls -->
+        <div class="position-absolute top-0 start-0 m-4 z-3 style-overlay">
+          <div class="card glass-card border-0 rounded-4 shadow-lg p-3 text-body" style="max-width: 340px;">
+            <h5 class="fw-bold mb-2 d-flex align-items-center gap-2">
+              <i class="fa-solid fa-satellite-dish text-primary animate-pulse"></i> Live Train GPS Tracker
+            </h5>
+            <select class="form-select form-select-sm mb-3" id="mapSelectTrain"
+              onchange="switchTrackedTrain(this.value)">
+              <option value="12952">12952 - Mumbai Rajdhani Express</option>
+              <option value="20901">20901 - Vande Bharat Express</option>
+            </select>
+
+            <div class="d-flex flex-column gap-2 small">
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Live Speed:</span>
+                <strong class="text-success" id="mapLiveSpeed">124 km/h</strong>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Engine Health:</span>
+                <span class="badge bg-success" id="mapEngineHealth">OPTIMAL (84°C)</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span class="text-muted">Status:</span>
+                <span class="badge bg-primary" id="mapStatusText">ON TIME (+4m)</span>
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-3">
+              <button class="btn btn-primary btn-sm w-100 rounded-pill" onclick="toggleAutoFollowMap()">
+                <i class="fa-solid fa-camera me-1"></i> Auto-Follow
+              </button>
+              <button class="btn btn-outline-secondary btn-sm rounded-pill" onclick="toggleMapTheme()">
+                <i class="fa-solid fa-layer-group"></i> Tiles
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 8. TELEMETRY DASHBOARD VIEW ==================== -->
+    <section id="telemetryView" class="app-view">
+      <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h3 class="fw-extrabold mb-1"><i class="fa-solid fa-microchip text-primary me-2"></i> Locomotive Telemetry &
+              Sensor Analytics</h3>
+            <p class="text-muted mb-0">Real-time CAN-bus metrics streamed from Train #12952 Loco Controller.</p>
+          </div>
+          <span
+            class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill fw-bold">
+            <i class="fa-solid fa-signal me-1"></i> LIVE SSE STREAM CONNECTED
+          </span>
+        </div>
+
+        <!-- Telemetry Gauges Row -->
+        <div class="row g-4 mb-4">
+          <div class="col-md-3">
+            <div class="card glass-card border-0 rounded-4 p-4 text-center shadow-sm">
+              <span class="small text-muted fw-bold text-uppercase">Current Speed</span>
+              <div class="gauge-value display-5 fw-extrabold text-primary my-2" id="telemSpeed">124 <small
+                  class="fs-6">km/h</small></div>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-primary" id="telemSpeedBar" style="width: 80%;"></div>
+              </div>
+              <span class="small text-muted mt-2 d-block">Max Limit: 130 km/h</span>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="card glass-card border-0 rounded-4 p-4 text-center shadow-sm">
+              <span class="small text-muted fw-bold text-uppercase">Engine Temp</span>
+              <div class="gauge-value display-5 fw-extrabold text-warning my-2" id="telemTemp">84 <small
+                  class="fs-6">°C</small></div>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-warning" id="telemTempBar" style="width: 65%;"></div>
+              </div>
+              <span class="small text-muted mt-2 d-block">Normal Range (60-90°C)</span>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="card glass-card border-0 rounded-4 p-4 text-center shadow-sm">
+              <span class="small text-muted fw-bold text-uppercase">Traction Power</span>
+              <div class="gauge-value display-5 fw-extrabold text-info my-2" id="telemPower">3420 <small
+                  class="fs-6">kWh</small></div>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-info" style="width: 75%;"></div>
+              </div>
+              <span class="small text-muted mt-2 d-block">25kV AC Overhead Grid</span>
+            </div>
+          </div>
+
+          <div class="col-md-3">
+            <div class="card glass-card border-0 rounded-4 p-4 text-center shadow-sm">
+              <span class="small text-muted fw-bold text-uppercase">Coach Occupancy</span>
+              <div class="gauge-value display-5 fw-extrabold text-success my-2" id="telemOccupancy">92 <small
+                  class="fs-6">%</small></div>
+              <div class="progress" style="height: 8px;">
+                <div class="progress-bar bg-success" style="width: 92%;"></div>
+              </div>
+              <span class="small text-muted mt-2 d-block">680 Passengers Onboard</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Telemetry Graphs Row -->
+        <div class="row g-4">
+          <div class="col-lg-8">
+            <div class="card glass-card border-0 rounded-4 p-4 shadow-sm">
+              <h5 class="fw-bold mb-3"><i class="fa-solid fa-chart-line text-primary me-2"></i> Speed & Power
+                Consumption Graph</h5>
+              <canvas id="telemetryChart" height="260"></canvas>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card glass-card border-0 rounded-4 p-4 shadow-sm h-100">
+              <h5 class="fw-bold mb-3"><i class="fa-solid fa-list-check text-primary me-2"></i> Safety & Brake Checks
+              </h5>
+              <ul class="list-group list-group-flush bg-transparent">
+                <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
+                  <span>KAVACH Anti-Collision</span> <span class="badge bg-success">ACTIVE</span>
+                </li>
+                <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
+                  <span>Pneumatic Brake Pressure</span> <strong class="text-dark">5.1 kg/cm²</strong>
+                </li>
+                <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
+                  <span>Axle Temperature</span> <strong class="text-dark">42 °C</strong>
+                </li>
+                <li class="list-group-item bg-transparent d-flex justify-content-between align-items-center">
+                  <span>Pantograph Contact</span> <span class="badge bg-success">STABLE</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 9. AIRPORT-STYLE LIVE STATION BOARD VIEW ==================== -->
+    <section id="stationBoardView" class="app-view">
+      <div class="container py-4">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+          <div>
+            <h3 class="fw-extrabold mb-1"><i class="fa-solid fa-table-list text-primary me-2"></i> Live Airport-Style
+              Station Board</h3>
+            <p class="text-muted mb-0">Split-flap animated departures and arrivals board.</p>
+          </div>
+
+          <div class="d-flex align-items-center gap-2">
+            <label class="fw-bold small text-muted">Station:</label>
+            <select class="form-select rounded-pill" id="boardStationSelect" onchange="loadStationBoard(this.value)">
+              <option value="NDLS">New Delhi (NDLS)</option>
+              <option value="MMCT">Mumbai Central (MMCT)</option>
+              <option value="HWH">Howrah Junction (HWH)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- FLIP BOARD TABLE CARD -->
+        <div class="card bg-dark text-white border-0 rounded-4 shadow-2xl overflow-hidden p-4">
+          <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-3 mb-3">
+            <h4 class="fw-bold mb-0 text-warning text-uppercase letter-spacing" id="stationBoardHeader">NEW DELHI (NDLS)
+              - DEPARTURES</h4>
+            <span class="badge bg-danger animate-pulse fs-6 px-3 py-2"><i class="fa-solid fa-circle me-1"></i> LIVE
+              BOARD</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-dark table-hover align-middle mb-0 text-monospace fs-5">
+              <thead class="text-muted small text-uppercase">
+                <tr>
+                  <th>Train #</th>
+                  <th>Train Name</th>
+                  <th>Destination</th>
+                  <th>PF</th>
+                  <th>Sched</th>
+                  <th>Exp Time</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="flipBoardBody">
+                <!-- Dynamically rendered with flip animation -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 10. PNR STATUS VIEW ==================== -->
+    <section id="pnrView" class="app-view">
+      <div class="container py-5">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <div class="card glass-card border-0 rounded-4 shadow-lg p-4 p-md-5 text-center mb-4">
+              <div
+                class="avatar-lg bg-primary-subtle text-primary rounded-circle mx-auto d-flex align-items-center justify-content-center fs-2 mb-3">
+                <i class="fa-solid fa-ticket"></i>
+              </div>
+              <h3 class="fw-bold">Check PNR Status</h3>
+              <p class="text-muted small">Enter 10-digit Passenger Name Record (PNR) to get instant booking details.</p>
+
+              <form id="pnrSearchForm" class="mt-3">
+                <div class="input-group input-group-lg mb-3">
+                  <input type="text" class="form-control rounded-start-pill text-center fw-bold letter-spacing"
+                    id="pnrInputNumber" placeholder="e.g. 8429104721" maxlength="10" required>
+                  <button class="btn btn-primary rounded-end-pill px-4 fw-bold" type="submit">
+                    Check Status
+                  </button>
+                </div>
+              </form>
+            </div>
+
+            <!-- PNR RESULT CONTAINER -->
+            <div id="pnrResultCard" class="card glass-card border-0 rounded-4 shadow-sm p-4 d-none">
+              <!-- Populated dynamically via app.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 11. TRIP PLANNER & AI DELAY PREDICTOR VIEW ==================== -->
+    <section id="tripPlannerView" class="app-view">
+      <div class="container py-4">
+        <div class="text-center mb-5">
+          <span class="badge bg-warning-subtle text-warning px-3 py-2 rounded-pill fw-bold text-uppercase">AI Railway
+            Intelligence</span>
+          <h2 class="display-6 fw-bold mt-2">Smart Trip Planner & AI Delay Risk Forecast</h2>
+          <p class="text-muted">Simulate route density, weather impact, and evaluate delay probability in real-time.</p>
+        </div>
+
+        <div class="row g-4">
+          <!-- AI PREDICTOR CONTROLS -->
+          <div class="col-lg-5">
+            <div class="card glass-card border-0 rounded-4 p-4 shadow-sm">
+              <h4 class="fw-bold mb-3"><i class="fa-solid fa-sliders text-warning me-2"></i> Predictor Parameters</h4>
+              <form id="delayPredictorForm">
+                <div class="mb-3">
+                  <label class="form-label small fw-bold">Weather Condition</label>
+                  <select class="form-select" id="aiWeather">
+                    <option value="Clear">Clear Sky / Normal</option>
+                    <option value="Rain">Moderate Rain</option>
+                    <option value="Fog">Dense Winter Fog</option>
+                    <option value="Storm">Thunderstorm Warning</option>
+                  </select>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label small fw-bold d-flex justify-content-between">
+                    <span>Track Congestion / Density</span>
+                    <span class="text-primary fw-bold" id="densityVal">70%</span>
+                  </label>
+                  <input type="range" class="form-range" id="aiDensity" min="20" max="100" value="70"
+                    oninput="document.getElementById('densityVal').innerText=this.value+'%'">
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                  <input class="form-check-input" type="checkbox" id="aiPeakHours" checked>
+                  <label class="form-check-label small fw-bold" for="aiPeakHours">Peak Festival Hours</label>
+                </div>
+
+                <div class="form-check form-switch mb-3">
+                  <input class="form-check-input" type="checkbox" id="aiMaintenance">
+                  <label class="form-check-label small fw-bold" for="aiMaintenance">Scheduled Track Maintenance</label>
+                </div>
+
+                <button type="submit" class="btn btn-warning w-100 rounded-3 fw-bold text-dark shadow-sm">
+                  <i class="fa-solid fa-wand-magic-sparkles me-1"></i> Calculate Delay Risk
+                </button>
+              </form>
+            </div>
+          </div>
+
+          <!-- AI RISK DISPLAY CARD -->
+          <div class="col-lg-7">
+            <div class="card glass-card border-0 rounded-4 p-4 shadow-sm text-center" id="aiResultCard">
+              <h5 class="fw-bold text-muted mb-2">AI Forecast Output</h5>
+              <div class="display-3 fw-extrabold text-success my-3" id="aiDelayProb">12%</div>
+              <h4 class="fw-bold" id="aiRiskTitle">Low Risk of Delay</h4>
+              <p class="text-muted" id="aiSuggestedText">On-time arrival highly likely. Green corridor clear.</p>
+
+              <div class="row g-3 mt-3 pt-3 border-top">
+                <div class="col-6">
+                  <span class="small text-muted">Model Confidence:</span>
+                  <div class="fw-bold fs-5 text-primary">94%</div>
+                </div>
+                <div class="col-6">
+                  <span class="small text-muted">Est. Max Delay:</span>
+                  <div class="fw-bold fs-5 text-dark" id="aiEstDelay">5 Mins</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 12. ADMIN CONTROL PANEL VIEW ==================== -->
+    <section id="adminView" class="app-view">
+      <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h3 class="fw-extrabold mb-1"><i class="fa-solid fa-user-shield text-warning me-2"></i> Railway System Admin
+              Console</h3>
+            <p class="text-muted mb-0">Manage trains, inspect bookings, process refunds, and export audit logs.</p>
+          </div>
+          <button class="btn btn-outline-primary btn-sm rounded-pill" onclick="exportAdminCsv()">
+            <i class="fa-solid fa-file-csv me-1"></i> Export Data CSV
+          </button>
+        </div>
+
+        <!-- Admin Stats Row -->
+        <div class="row g-3 mb-4" id="adminStatsRow">
+          <!-- Populated dynamically via admin.js -->
+        </div>
+
+        <!-- Admin Control Tabs -->
+        <div class="card glass-card border-0 rounded-4 shadow-sm p-4">
+          <ul class="nav nav-tabs border-bottom mb-4">
+            <li class="nav-item">
+              <button class="nav-link active fw-bold" onclick="switchAdminTab('trains')">Manage Trains</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link fw-bold" onclick="switchAdminTab('bookings')">Bookings & Manifests</button>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link fw-bold" onclick="switchAdminTab('logs')">System Audit Logs</button>
+            </li>
+          </ul>
+
+          <div id="adminTabContent">
+            <!-- Dynamic Content -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- PAYMENT MODAL -->
+  <div class="modal fade" id="paymentModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 rounded-4 shadow-2xl">
+        <div class="modal-header border-bottom">
+          <h5 class="modal-title fw-bold"><i class="fa-solid fa-lock text-success me-2"></i> RailPulse Payment Gateway
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4">
+          <ul class="nav nav-pills nav-justified mb-3 gap-2" id="paymentMethodPills">
+            <li class="nav-item"><button class="nav-link active rounded-3 small fw-bold"
+                onclick="selectPayTab('upi')">UPI / GPay</button></li>
+            <li class="nav-item"><button class="nav-link rounded-3 small fw-bold"
+                onclick="selectPayTab('card')">Credit/Debit Card</button></li>
+            <li class="nav-item"><button class="nav-link rounded-3 small fw-bold" onclick="selectPayTab('wallet')">Rail
+                Wallet</button></li>
+          </ul>
+
+          <div id="paymentTabContent">
+            <!-- UPI Form -->
+            <div id="payUpiTab">
+              <label class="form-label small fw-bold">Enter UPI ID</label>
+              <input type="text" class="form-control mb-3" placeholder="username@upi / gpay / paytm" id="inputUpiId"
+                value="passenger@okaxis">
+              <div class="text-center p-3 bg-light rounded-3 border">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=railpulse@icici"
+                  class="rounded shadow-sm" alt="UPI QR">
+                <span class="small text-muted d-block mt-2">Scan & Pay via GPay / PhonePe</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-top">
+          <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-success rounded-pill px-4 fw-bold" id="btnConfirmPay"
+            onclick="processPayment()">
+            Pay <span id="modalPayAmount">₹0</span> & Confirm Ticket
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AUTH MODALS (LOGIN / SIGNUP) -->
+  <div class="modal fade" id="loginModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 rounded-4 shadow-2xl">
+        <div class="modal-body p-4">
+          <h4 class="fw-bold mb-3"><i class="fa-solid fa-right-to-bracket text-primary me-2"></i> Passenger Login</h4>
+          <form id="loginForm">
+            <div class="mb-3">
+              <label class="form-label small fw-bold">Email Address</label>
+              <input type="email" class="form-control" id="loginEmail" value="rahul.sharma@example.com" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-bold">Password</label>
+              <input type="password" class="form-control" id="loginPassword" value="passenger123" required>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 rounded-3 fw-bold mb-2">Login</button>
+            <div class="text-center small text-muted">
+              Demo Admin Login: <strong>admin@railpulse.com</strong> / <strong>admin123</strong>
+            </div>
+            <!-- AADHAAR OTP VERIFICATION MODAL -->
+            <div class="modal fade" id="aadhaarOtpModal" tabindex="-1">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 rounded-4 shadow-2xl">
+                  <div class="modal-header border-bottom">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-shield-halved text-success me-2"></i> Aadhaar
+                      e-KYC Verification</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body p-4 text-center">
+                    <div
+                      class="avatar-lg bg-success-subtle text-success rounded-circle mx-auto d-flex align-items-center justify-content-center fs-2 mb-3">
+                      <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1">Enter 6-Digit Aadhaar OTP</h5>
+                    <p class="small text-muted mb-3">An OTP has been dispatched to the mobile number registered with
+                      Aadhaar <strong id="aadhaarMaskedDisplay">XXXX-XXXX-9012</strong>.</p>
+
+                    <div class="mb-3">
+                      <input type="text" class="form-control form-control-lg text-center fw-bold fs-3 letter-spacing"
+                        id="aadhaarOtpInput" placeholder="123456" maxlength="6" value="123456" required>
+                      <div class="form-text small text-muted">Test Verification Code: <strong>123456</strong></div>
+                    </div>
+
+                    <div class="alert alert-info py-2 small mb-0">
+                      <i class="fa-solid fa-circle-info me-1"></i> UIDAI e-KYC Auth protects passenger identity against
+                      fraudulent ticketing.
+                    </div>
+                  </div>
+                  <div class="modal-footer border-top">
+                    <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-success rounded-pill px-4 fw-bold"
+                      onclick="verifyAadhaarOtpCode()">
+                      <i class="fa-solid fa-user-check me-1"></i> Verify OTP & Authenticate
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- FOOTER -->
+            <footer class="bg-dark text-white-50 py-5 mt-auto border-top border-secondary">
+              <div class="container">
+                <div class="row g-4 mb-4">
+                  <div class="col-lg-4">
+                    <h4 class="text-white fw-bold mb-2"><i class="fa-solid fa-train-subway text-primary me-2"></i>
+                      RailPulse</h4>
+                    <p class="small">Production-Ready Smart Railway Reservation, Live Locomotive Telemetry Analytics &
+                      Digital Ticketing Platform.</p>
+                  </div>
+                  <div class="col-6 col-lg-2">
+                    <h6 class="text-white fw-bold mb-3">Passenger Tools</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                      <li><a href="#" onclick="navigateTo('searchView')"
+                          class="text-white-50 text-decoration-none">Search Trains</a></li>
+                      <li><a href="#" onclick="navigateTo('pnrView')" class="text-white-50 text-decoration-none">PNR
+                          Status</a></li>
+                      <li><a href="#" onclick="navigateTo('stationBoardView')"
+                          class="text-white-50 text-decoration-none">Station Board</a></li>
+                    </ul>
+                  </div>
+                  <div class="col-6 col-lg-2">
+                    <h6 class="text-white fw-bold mb-3">Telemetry Hub</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2">
+                      <li><a href="#" onclick="navigateTo('liveStatusView')"
+                          class="text-white-50 text-decoration-none">Live Map Tracker</a></li>
+                      <li><a href="#" onclick="navigateTo('telemetryView')"
+                          class="text-white-50 text-decoration-none">Engine Telemetry</a></li>
+                      <li><a href="#" onclick="navigateTo('tripPlannerView')"
+                          class="text-white-50 text-decoration-none">AI Delay Predictor</a></li>
+                    </ul>
+                  </div>
+                  <div class="col-lg-4">
+                    <h6 class="text-white fw-bold mb-3">Newsletter</h6>
+                    <div class="input-group">
+                      <input type="email" class="form-control border-secondary bg-dark text-white"
+                        placeholder="Enter email">
+                      <button class="btn btn-primary" type="button">Subscribe</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-center pt-3 border-top border-secondary small">
+                  © 2026 RailPulse Systems. Built for Production Excellence.
+                </div>
+              </div>
+            </footer>
+
+            <!-- DEPENDENCY SCRIPTS -->
+            <!-- Bootstrap 5 JS Bundle -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+            <!-- Leaflet JS for Maps -->
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+            <!-- Chart.js for Telemetry -->
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <!-- QRCode.js -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+            <!-- jsPDF for Ticket PDF Download -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+            <!-- AOS Animation JS -->
+            <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+            <!-- CUSTOM APPLICATION SCRIPTS -->
+            <script src="js/api.js"></script>
+            <script src="js/seat-picker.js"></script>
+            <script src="js/map-tracker.js"></script>
+            <script src="js/telemetry.js"></script>
+            <script src="js/station-board.js"></script>
+            <script src="js/delay-predictor.js"></script>
+            <script src="js/admin.js"></script>
+            <script src="js/app.js"></script>
+
+</body>
+
+</html>
