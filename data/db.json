@@ -1,0 +1,622 @@
+{
+  "users": [
+    {
+      "id": "usr_admin",
+      "name": "Admin Controller",
+      "email": "admin@railpulse.com",
+      "passwordHash": "c63774cfc9dc85d423d73565cc82b087fbf6c2ef58eaff18ee313c66e52af89de79ff5833db5f7880db0589db8a8258b830215c0ff4fe38a84f3c2f391e4bbe7",
+      "role": "admin",
+      "phone": "+91 9876543210",
+      "walletBalance": 12500,
+      "loyaltyPoints": 450,
+      "createdAt": "2026-01-01T00:00:00.000Z"
+    },
+    {
+      "id": "usr_passenger1",
+      "name": "Rahul Sharma",
+      "email": "rahul.sharma@example.com",
+      "passwordHash": "37c5c027f3ffc130ca9d20ce3ae1fd85a90e04bf4a353d6b4b87870644021bdbb7a14c84b99be178095839e59ef3432585fa7df15776a48ec6127c1b5d5434ff",
+      "role": "passenger",
+      "phone": "+91 9988776655",
+      "walletBalance": 3450,
+      "loyaltyPoints": 180,
+      "createdAt": "2026-02-10T12:30:00.000Z"
+    }
+  ],
+  "stations": [
+    {
+      "code": "NDLS",
+      "name": "New Delhi Railway Station",
+      "city": "New Delhi",
+      "state": "Delhi",
+      "lat": 28.643,
+      "lng": 77.2194,
+      "platforms": 16
+    },
+    {
+      "code": "MMCT",
+      "name": "Mumbai Central",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "lat": 18.9696,
+      "lng": 72.8193,
+      "platforms": 9
+    },
+    {
+      "code": "HWH",
+      "name": "Howrah Junction",
+      "city": "Kolkata",
+      "state": "West Bengal",
+      "lat": 22.5839,
+      "lng": 88.3426,
+      "platforms": 23
+    },
+    {
+      "code": "MAS",
+      "name": "MGR Chennai Central",
+      "city": "Chennai",
+      "state": "Tamil Nadu",
+      "lat": 13.0827,
+      "lng": 80.2757,
+      "platforms": 12
+    },
+    {
+      "code": "SBC",
+      "name": "KSR Bengaluru City",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "lat": 12.9781,
+      "lng": 77.5697,
+      "platforms": 10
+    },
+    {
+      "code": "ADI",
+      "name": "Ahmedabad Junction",
+      "city": "Ahmedabad",
+      "state": "Gujarat",
+      "lat": 23.0225,
+      "lng": 72.5714,
+      "platforms": 12
+    },
+    {
+      "code": "SC",
+      "name": "Secunderabad Junction",
+      "city": "Hyderabad",
+      "state": "Telangana",
+      "lat": 17.4339,
+      "lng": 78.5016,
+      "platforms": 10
+    },
+    {
+      "code": "PUNE",
+      "name": "Pune Junction",
+      "city": "Pune",
+      "state": "Maharashtra",
+      "lat": 18.5284,
+      "lng": 73.8739,
+      "platforms": 6
+    },
+    {
+      "code": "CNB",
+      "name": "Kanpur Central",
+      "city": "Kanpur",
+      "state": "Uttar Pradesh",
+      "lat": 26.4537,
+      "lng": 80.3507,
+      "platforms": 10
+    },
+    {
+      "code": "PRYJ",
+      "name": "Prayagraj Junction",
+      "city": "Prayagraj",
+      "state": "Uttar Pradesh",
+      "lat": 25.4414,
+      "lng": 81.8267,
+      "platforms": 10
+    }
+  ],
+  "trains": [
+    {
+      "id": "12952",
+      "number": "12952",
+      "name": "Mumbai Rajdhani Express",
+      "type": "Rajdhani Express",
+      "sourceCode": "NDLS",
+      "sourceName": "New Delhi",
+      "destCode": "MMCT",
+      "destName": "Mumbai Central",
+      "depTime": "16:55",
+      "arrTime": "08:35",
+      "duration": "15h 40m",
+      "distanceKm": 1384,
+      "runningDays": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ],
+      "speedKmh": 130,
+      "classes": {
+        "1A": {
+          "available": 14,
+          "price": 4750
+        },
+        "2A": {
+          "available": 42,
+          "price": 2890
+        },
+        "3A": {
+          "available": 118,
+          "price": 2040
+        }
+      },
+      "coaches": [
+        "ENG",
+        "SLR",
+        "H1",
+        "A1",
+        "A2",
+        "B1",
+        "B2",
+        "B3",
+        "PC",
+        "B4",
+        "SLR"
+      ],
+      "intermediateStations": [
+        {
+          "code": "NDLS",
+          "name": "New Delhi",
+          "arrival": "--",
+          "departure": "16:55",
+          "halt": "--",
+          "platform": 1,
+          "distance": 0
+        },
+        {
+          "code": "CNB",
+          "name": "Kanpur Central",
+          "arrival": "21:30",
+          "departure": "21:35",
+          "halt": "5m",
+          "platform": 5,
+          "distance": 440
+        },
+        {
+          "code": "PRYJ",
+          "name": "Prayagraj Jn",
+          "arrival": "23:40",
+          "departure": "23:45",
+          "halt": "5m",
+          "platform": 2,
+          "distance": 635
+        },
+        {
+          "code": "ADI",
+          "name": "Ahmedabad Jn",
+          "arrival": "04:10",
+          "departure": "04:20",
+          "halt": "10m",
+          "platform": 3,
+          "distance": 1090
+        },
+        {
+          "code": "MMCT",
+          "name": "Mumbai Central",
+          "arrival": "08:35",
+          "departure": "--",
+          "halt": "--",
+          "platform": 1,
+          "distance": 1384
+        }
+      ]
+    },
+    {
+      "id": "20901",
+      "number": "20901",
+      "name": "Vande Bharat Express",
+      "type": "Vande Bharat",
+      "sourceCode": "NDLS",
+      "sourceName": "New Delhi",
+      "destCode": "ADI",
+      "destName": "Ahmedabad Junction",
+      "depTime": "06:10",
+      "arrTime": "12:30",
+      "duration": "6h 20m",
+      "distanceKm": 930,
+      "runningDays": [
+        "Mon",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ],
+      "speedKmh": 160,
+      "classes": {
+        "EC": {
+          "available": 24,
+          "price": 3120
+        },
+        "CC": {
+          "available": 85,
+          "price": 1780
+        }
+      },
+      "coaches": [
+        "ENG",
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "EC1",
+        "EC2",
+        "C5",
+        "ENG"
+      ],
+      "intermediateStations": [
+        {
+          "code": "NDLS",
+          "name": "New Delhi",
+          "arrival": "--",
+          "departure": "06:10",
+          "halt": "--",
+          "platform": 2,
+          "distance": 0
+        },
+        {
+          "code": "CNB",
+          "name": "Kanpur Central",
+          "arrival": "09:00",
+          "departure": "09:05",
+          "halt": "5m",
+          "platform": 1,
+          "distance": 440
+        },
+        {
+          "code": "ADI",
+          "name": "Ahmedabad Jn",
+          "arrival": "12:30",
+          "departure": "--",
+          "halt": "--",
+          "platform": 4,
+          "distance": 930
+        }
+      ]
+    },
+    {
+      "id": "12302",
+      "number": "12302",
+      "name": "Howrah Rajdhani Express",
+      "type": "Rajdhani Express",
+      "sourceCode": "NDLS",
+      "sourceName": "New Delhi",
+      "destCode": "HWH",
+      "destName": "Howrah Junction",
+      "depTime": "16:50",
+      "arrTime": "09:55",
+      "duration": "17h 05m",
+      "distanceKm": 1447,
+      "runningDays": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ],
+      "speedKmh": 130,
+      "classes": {
+        "1A": {
+          "available": 8,
+          "price": 4920
+        },
+        "2A": {
+          "available": 34,
+          "price": 2980
+        },
+        "3A": {
+          "available": 92,
+          "price": 2150
+        }
+      },
+      "coaches": [
+        "ENG",
+        "SLR",
+        "H1",
+        "A1",
+        "A2",
+        "B1",
+        "B2",
+        "PC",
+        "B3",
+        "SLR"
+      ],
+      "intermediateStations": [
+        {
+          "code": "NDLS",
+          "name": "New Delhi",
+          "arrival": "--",
+          "departure": "16:50",
+          "halt": "--",
+          "platform": 3,
+          "distance": 0
+        },
+        {
+          "code": "CNB",
+          "name": "Kanpur Central",
+          "arrival": "21:20",
+          "departure": "21:25",
+          "halt": "5m",
+          "platform": 4,
+          "distance": 440
+        },
+        {
+          "code": "PRYJ",
+          "name": "Prayagraj Jn",
+          "arrival": "23:35",
+          "departure": "23:40",
+          "halt": "5m",
+          "platform": 1,
+          "distance": 635
+        },
+        {
+          "code": "HWH",
+          "name": "Howrah Junction",
+          "arrival": "09:55",
+          "departure": "--",
+          "halt": "--",
+          "platform": 9,
+          "distance": 1447
+        }
+      ]
+    },
+    {
+      "id": "12626",
+      "number": "12626",
+      "name": "Kerala Superfast Express",
+      "type": "Superfast",
+      "sourceCode": "NDLS",
+      "sourceName": "New Delhi",
+      "destCode": "MAS",
+      "destName": "MGR Chennai Central",
+      "depTime": "20:10",
+      "arrTime": "04:35",
+      "duration": "32h 25m",
+      "distanceKm": 2182,
+      "runningDays": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ],
+      "speedKmh": 110,
+      "classes": {
+        "2A": {
+          "available": 18,
+          "price": 3150
+        },
+        "3A": {
+          "available": 65,
+          "price": 2180
+        },
+        "SL": {
+          "available": 140,
+          "price": 820
+        }
+      },
+      "coaches": [
+        "ENG",
+        "SLR",
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "B1",
+        "B2",
+        "A1",
+        "SLR"
+      ],
+      "intermediateStations": [
+        {
+          "code": "NDLS",
+          "name": "New Delhi",
+          "arrival": "--",
+          "departure": "20:10",
+          "halt": "--",
+          "platform": 5,
+          "distance": 0
+        },
+        {
+          "code": "SC",
+          "name": "Secunderabad Jn",
+          "arrival": "17:15",
+          "departure": "17:25",
+          "halt": "10m",
+          "platform": 2,
+          "distance": 1670
+        },
+        {
+          "code": "MAS",
+          "name": "Chennai Central",
+          "arrival": "04:35",
+          "departure": "--",
+          "halt": "--",
+          "platform": 7,
+          "distance": 2182
+        }
+      ]
+    },
+    {
+      "id": "12658",
+      "number": "12658",
+      "name": "Bengaluru Mail",
+      "type": "Mail Express",
+      "sourceCode": "MAS",
+      "sourceName": "MGR Chennai Central",
+      "destCode": "SBC",
+      "destName": "KSR Bengaluru City",
+      "depTime": "22:50",
+      "arrTime": "04:35",
+      "duration": "5h 45m",
+      "distanceKm": 362,
+      "runningDays": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Sun"
+      ],
+      "speedKmh": 100,
+      "classes": {
+        "1A": {
+          "available": 10,
+          "price": 1850
+        },
+        "2A": {
+          "available": 28,
+          "price": 1120
+        },
+        "3A": {
+          "available": 84,
+          "price": 780
+        },
+        "SL": {
+          "available": 190,
+          "price": 290
+        }
+      },
+      "coaches": [
+        "ENG",
+        "SLR",
+        "S1",
+        "S2",
+        "S3",
+        "B1",
+        "B2",
+        "A1",
+        "H1",
+        "SLR"
+      ],
+      "intermediateStations": [
+        {
+          "code": "MAS",
+          "name": "Chennai Central",
+          "arrival": "--",
+          "departure": "22:50",
+          "halt": "--",
+          "platform": 8,
+          "distance": 0
+        },
+        {
+          "code": "SBC",
+          "name": "Bengaluru City",
+          "arrival": "04:35",
+          "departure": "--",
+          "halt": "--",
+          "platform": 1,
+          "distance": 362
+        }
+      ]
+    }
+  ],
+  "bookings": [
+    {
+      "pnr": "8429104721",
+      "bookingId": "BK-90218",
+      "userId": "usr_passenger1",
+      "userEmail": "rahul.sharma@example.com",
+      "trainId": "12952",
+      "trainNumber": "12952",
+      "trainName": "Mumbai Rajdhani Express",
+      "fromStation": "NDLS",
+      "fromStationName": "New Delhi",
+      "toStation": "MMCT",
+      "toStationName": "Mumbai Central",
+      "travelDate": "2026-08-05",
+      "coachClass": "3A",
+      "quota": "General",
+      "status": "CONFIRMED",
+      "passengers": [
+        {
+          "name": "Rahul Sharma",
+          "age": 29,
+          "gender": "Male",
+          "berthPreference": "Lower",
+          "mealPreference": "Veg",
+          "coach": "B2",
+          "seatNumber": "23",
+          "berthType": "LB",
+          "status": "CNF"
+        },
+        {
+          "name": "Priya Sharma",
+          "age": 27,
+          "gender": "Female",
+          "berthPreference": "Upper",
+          "mealPreference": "Veg",
+          "coach": "B2",
+          "seatNumber": "24",
+          "berthType": "UB",
+          "status": "CNF"
+        }
+      ],
+      "fareDetails": {
+        "baseFare": 4080,
+        "gst": 204,
+        "convenienceFee": 35,
+        "insurance": 70,
+        "totalAmount": 4389
+      },
+      "paymentMethod": "UPI (Google Pay)",
+      "paymentStatus": "SUCCESS",
+      "chartStatus": "CHART PREPARED",
+      "createdAt": "2026-07-28T10:15:00.000Z"
+    }
+  ],
+  "refunds": [
+    {
+      "id": "REF-1092",
+      "pnr": "7219082311",
+      "userEmail": "rahul.sharma@example.com",
+      "amount": 1840,
+      "status": "PROCESSED",
+      "date": "2026-07-25T14:20:00.000Z"
+    }
+  ],
+  "auditLogs": [
+    {
+      "timestamp": "2026-07-28T08:00:00.000Z",
+      "user": "System",
+      "action": "Server Started",
+      "details": "RailPulse Telemetry & REST Engine initialized"
+    },
+    {
+      "timestamp": "2026-07-28T10:15:00.000Z",
+      "user": "rahul.sharma@example.com",
+      "action": "Ticket Booked",
+      "details": "PNR: 8429104721 (2 Passengers)"
+    },
+    {
+      "timestamp": "2026-07-28T08:41:41.576Z",
+      "user": "admin@railpulse.com",
+      "action": "User Login",
+      "details": "Login token issued"
+    },
+    {
+      "timestamp": "2026-07-28T08:42:28.442Z",
+      "user": "rahul.sharma@example.com",
+      "action": "User Login",
+      "details": "Login token issued"
+    }
+  ]
+}
